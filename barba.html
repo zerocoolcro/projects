@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧂 Barba iz Kaštila - Digitalni Kapetan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #87ceeb 100%);
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2c3e50;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="waves" x="0" y="0" width="100" height="20" patternUnits="userSpaceOnUse"><path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23waves)"/></svg>') repeat;
+            z-index: -1;
+        }
+        
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 700px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: drift 20s linear infinite;
+        }
+        
+        @keyframes drift {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .captain-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid #f39c12;
+            margin: 0 auto 15px;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(45deg, #8b4513, #a0522d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .captain-avatar::before {
+            content: '🧓🏻';
+            filter: sepia(0.3) saturate(1.2);
+        }
+        
+        .header h1 {
+            font-family: 'Pirata One', cursive;
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .chat-body {
+            padding: 30px;
+        }
+        
+        .odgovor {
+            background: linear-gradient(135deg, #fff8dc 0%, #faf0e6 100%);
+            border: 2px solid #deb887;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .odgovor::before {
+            content: '⚓';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #34495e;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 18px 25px;
+            border: 3px solid #bdc3c7;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        input[type="text"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+            background: white;
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
+        }
+        
+        .send-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .suggestion-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .suggestion-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .suggestion-btn.culture {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+        }
+        
+        .suggestion-btn.culture:hover {
+            box-shadow: 0 8px 20px rgba(155, 89, 182, 0.4);
+        }
+        
+        .suggestion-btn.sport {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+        }
+        
+        .suggestion-btn.sport:hover {
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .footer::before {
+            content: '🌊';
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .chat-body {
+                padding: 20px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .send-btn {
+                margin-top: 10px;
+            }
+            
+            .suggestions {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .loading::after {
+            content: '';
+            animation: dots 1.5s linear infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <div class="captain-avatar"></div>
+            <h1>Kapetan Barba iz Kaštila</h1>
+            <!-- unutar <div class="header"> -->
+            <p>
+                {% if ime %}
+                    Ća je {{ ime }}! Rode, samo napiši poruku ispod.
+                {% else %}
+                    Unesi svoje ime da te barba zna osloviti!
+                {% endif %}
+            </p>
+
+        </div>
+        
+        <div class="chat-body">
+            {% if odgovor %}
+            <div class="odgovor">
+                <strong>🧂 Kapetan Barba govori:</strong><br><br>
+                {{ odgovor }}
+            </div>
+            {% endif %}
+            
+            <div class="loading" id="loading">
+                Kapetan razmišlja
+            </div>
+            
+            <form method="post" class="form-section" onsubmit="showLoading()">
+                <div class="input-group">
+                    {% if not ime %}
+                    <p style="margin-bottom: 10px;">Unesi svoje ime:</p>
+                    <input type="text" name="ime" placeholder="Tvoje ime..." required>
+                    {% endif %}
+
+                    <input type="text" name="poruka" placeholder="Pošaljite poruku kapetanu..." required autocomplete="off">
+                    <button type="submit" class="send-btn">⚓ Pošalji</button>
+                </div>
+                
+                <div class="suggestions">
+                    <button type="button" class="suggestion-btn" onclick="setMessage('Što ima novoga?')">
+                        📰 Sve friske vijesti
+                    </button>
+                    <button type="button" class="suggestion-btn sport" onclick="setMessage('Buduće utakmice')">
+                        ⚽ Sportski događaji
+                    </button>
+                    <button type="button" class="suggestion-btn culture" onclick="setMessage('Nadolazeći koncerti')">
+                        🎵 Kulturni program
+                    </button>
+                    <button type="button" class="suggestion-btn sport" onclick="setMessage('Sport vijesti')">
+                        🏀 Sport iz Kaštela
+                    </button>
+                    <button type="button" class="suggestion-btn culture" onclick="setMessage('Kultura vijesti')">
+                        🎭 Kultura i umjetnost
+                    </button>
+                    <button type="button" class="suggestion-btn" onclick="setMessage('Kako je vrijeme?')">
+                        🌤️ Vremenska prognoza
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="footer">
+            Nemoj pitat suside šta se događa viruj, rode, ja sam na svakon ćošku
+        </div>
+    </div>
+    
+    <script>
+        function setMessage(message) {
+            document.querySelector('input[name="poruka"]').value = message;
+            showLoading();
+            document.querySelector('form').submit();
+        }
+        
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        
+        // Auto-focus na input field
+        document.querySelector('input[name="poruka"]').focus();
+        
+        // Enter za slanje
+        document.querySelector('input[name="poruka"]').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                showLoading();
+                document.querySelector('form').submit();
+            }
+        });
+        
+        // Sakrij loading ako je stranica učitana s odgovorom
+        window.addEventListener('load', function() {
+            document.getElementById('loading').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
